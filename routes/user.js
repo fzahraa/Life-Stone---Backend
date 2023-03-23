@@ -5,6 +5,8 @@ const {
   signInEn,
   getUserEn,
   checkEmail,
+  signInWithGoogle,
+  signInWithFacebook,
 } = require('../controllers/user');
 
 const verifyToken = require('../middleware/auth');
@@ -17,6 +19,10 @@ router.route('/getuseren').get(verifyToken, getUserEn);
 
 router.route('/checkemail').post(checkEmail);
 
+router.route('/signInWithGoogle').post(signInWithGoogle); 
 
+router.route('/signinwithfacebook').post(signInWithFacebook);
+
+router.route('/signinwithinstagram').post(signInWithFacebook);
 
 module.exports = router;

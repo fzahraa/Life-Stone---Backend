@@ -112,6 +112,110 @@ exports.signInEn = async (req, res) => {
   }
 };
 
+//@desc      User signin
+//@route     Post /user/signinwithgoogle
+//@access    Public
+
+exports.signInWithGoogle = async (req, res) => {
+  let { name, email, token, loginType } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      const newUser = new User({
+        name_en: name,
+        email,
+        loginType, 
+      });
+      newUser
+        .save()
+        .then(() => {
+          return res.json({
+            status: 'SUCCESS',
+            message: 'SignedUp successfully',
+            token: token,
+            user: newUser,
+          });
+        })
+        .catch((err) => {
+          return res.json({
+            status: 'FAILED',
+            message: 'An error occurred while saving user account',
+            error: err,
+          });
+        });
+    }
+
+    if (user) {
+      return res.json({
+        status: 'SUCCESS',
+        message: 'SignedUp successfully',
+        token: token,
+        user: user,
+      });
+    }
+  } catch (err) {
+    return res.json({
+      status: 'FAILED',
+      message: 'An Error occurred while checking the credentials',
+      error: err.message,
+    });
+  }
+};
+
+
+//@desc      User signin
+//@route     Post /user/signinwithfacebook
+//@access    Public
+
+exports.signInWithFacebook = async (req, res) => {
+  let { name, email, token, loginType, facebookId} = req.body;
+  try {
+    const user = await User.findOne({ facebookId });
+
+    if (!user) {
+      const newUser = new User({
+        name_en: name,
+        email,
+        loginType,
+        token,
+        facebookId
+      });
+      newUser
+        .save()
+        .then(() => {
+          return res.json({
+            status: 'SUCCESS',
+            message: 'SignedUp successfully',
+            token: token,
+            user: newUser,
+          });
+        })
+        .catch((err) => {
+          return res.json({
+            status: 'FAILED',
+            message: 'An error occurred while saving user account',
+            error: err,
+          });
+        });
+    }
+
+    if (user) {
+      return res.json({
+        status: 'SUCCESS',
+        message: 'SignedUp successfully',
+        token: token,
+        user: user,
+      });
+    }
+  } catch (err) {
+    return res.json({
+      status: 'FAILED',
+      message: 'An Error occurred while checking the credentials',
+      error: err.message,
+    });
+  }
+};
 
 //@desc      Get user
 //@route     get /user/getuseren
